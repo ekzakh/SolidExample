@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.ekzak.solidexample.MainActivity.NotificationType
+import com.ekzak.solidexample.logger.NotificationLogger
 import com.ekzak.solidexample.services.EmailNotification
 import com.ekzak.solidexample.services.ToastNotification
 import com.ekzak.solidexample.services.UpdateUiService
@@ -25,6 +26,7 @@ fun MainScreen(
     context: Context,
     notificationType: NotificationType,
     updateUiService: UpdateUiService,
+    notificationLogger: NotificationLogger,
 ) {
     val textState = remember { mutableStateOf(TextFieldValue()) }
 
@@ -37,8 +39,14 @@ fun MainScreen(
         Button(
             onClick = {
                 when (notificationType) {
-                    NotificationType.TOAST -> ToastNotification(context).sendNotification(textState.value.text)
-                    NotificationType.EMAIL -> EmailNotification().sendNotification(textState.value.text)
+                    NotificationType.TOAST -> {
+                        ToastNotification(context).sendNotification(textState.value.text)
+                        notificationLogger.logNotification(textState.value.text)
+                    }
+                    NotificationType.EMAIL -> {
+                        EmailNotification().sendNotification(textState.value.text)
+                        notificationLogger.logNotification(textState.value.text)
+                    }
                 }
             },
             modifier = Modifier.padding(16.dp)
