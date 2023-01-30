@@ -1,6 +1,7 @@
 package com.ekzak.solidexample.logger
 
 import android.util.Log
+import com.ekzak.solidexample.services.DataBase
 
 open class NotificationLogger {
     open fun logNotification(msg: String) {
@@ -8,10 +9,11 @@ open class NotificationLogger {
     }
 }
 
-class EmailNotificationLogger : NotificationLogger() {
+class EmailNotificationLogger(private val dataBase: DataBase) : NotificationLogger() {
 
     override fun logNotification(msg: String) {
         Log.d("checkData", "EmailNotificationLogger logNotification $msg")
+        dataBase.save(msg)
     }
 }
 

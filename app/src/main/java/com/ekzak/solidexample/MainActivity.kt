@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import com.ekzak.solidexample.listener.SwipeListener
 import com.ekzak.solidexample.logger.EmailNotificationLogger
 import com.ekzak.solidexample.logger.ToastNotificationLogger
+import com.ekzak.solidexample.services.MySQLBase
 import com.ekzak.solidexample.services.UpdateUiService
 import com.ekzak.solidexample.ui.theme.SolidExampleTheme
 
@@ -25,10 +26,10 @@ class MainActivity : ComponentActivity(), SwipeListener {
     private val updateUiService = UpdateUiService()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val notificationType = NotificationType.TOAST
+        val notificationType = NotificationType.EMAIL
         val notificationLogger = when (notificationType) {
             NotificationType.TOAST -> ToastNotificationLogger()
-            NotificationType.EMAIL -> EmailNotificationLogger()
+            NotificationType.EMAIL -> EmailNotificationLogger(MySQLBase())
         }
         setContent {
             SolidExampleTheme {
